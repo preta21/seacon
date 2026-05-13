@@ -1,82 +1,58 @@
-/* global KEEP */
+$(document).ready( function () {
+    $('article').lightGallery({
+        selector: '.img-item',
+        subHtmlSelectorRelative: true
+    });
 
-window.addEventListener('DOMContentLoaded', () => {
-  const { version, local_search, lazyload } = KEEP.theme_config
+    let tocInit = function () {
+        $("#toc-content a").each( function () {
+            var oldText = $(this).text();
+            var newText = oldText.replace('#','');
+            $(this).text(newText);
 
-  KEEP.themeInfo = {
-    theme: `Keep v${version}`,
-    author: 'XPoet',
-    repository: 'https://github.com/XPoet/hexo-theme-keep',
-    localStorageKey: 'KEEP-THEME-STATUS',
-    encryptKey: 'KEEP-ENCRYPT',
-    styleStatus: {
-      isDark: false,
-      fontSizeLevel: 0,
-      isShowToc: true
-    },
-    defaultDatetimeFormat: 'YYYY-MM-DD HH:mm:ss'
-  }
-
-  // print theme base info
-  KEEP.printThemeInfo = () => {
-    console.log(
-      `\n %c ${KEEP.themeInfo.theme} %c ${KEEP.themeInfo.repository} \n`,
-      `color: #fadfa3; background: #333; padding: 6px 0;`,
-      `padding: 6px 0;`
-    )
-  }
-  KEEP.printThemeInfo()
-
-  // set version number of footer
-  KEEP.setFooterVersion = () => {
-    const vd = document.querySelector('.footer .keep-version')
-    vd && (vd.innerHTML = KEEP.themeInfo.theme)
-  }
-
-  // set styleStatus to localStorage
-  KEEP.setStyleStatus = () => {
-    localStorage.setItem(KEEP.themeInfo.localStorageKey, JSON.stringify(KEEP.themeInfo.styleStatus))
-  }
-
-  // get styleStatus from localStorage
-  KEEP.getStyleStatus = () => {
-    let temp = localStorage.getItem(KEEP.themeInfo.localStorageKey)
-    if (temp) {
-      temp = JSON.parse(temp)
-      for (let key in KEEP.themeInfo.styleStatus) {
-        KEEP.themeInfo.styleStatus[key] = temp[key]
-      }
-      return temp
-    } else {
-      return null
+            if ($(this).hasClass("toc-link")) {
+                $(this).addClass("text-truncate d-block");
+            }
+        });
     }
-  }
+    tocInit();
 
-  // init prototype function
-  KEEP.initPrototype = () => {
-    HTMLElement.prototype.wrap = function (wrapper) {
-      this.parentNode.insertBefore(wrapper, this)
-      this.parentNode.removeChild(this)
-      wrapper.appendChild(this)
+    let cardListInit = function () {  
+	    $(".card ul").each( function () {
+            if ($(this).parent().hasClass("card-body")) {
+                $(this).unwrap();
+            }
+        });
+        $(".card ul").addClass("list-group list-group-flush");
+        $(".card ul li").addClass("list-group-item");
     }
-  }
-  KEEP.initPrototype()
+    cardListInit();
 
-  KEEP.initExecute = () => {
-    KEEP.initUtils()
-    KEEP.initHeaderShrink()
-    KEEP.initModeToggle()
-    KEEP.initBack2Top()
-    KEEP.initCodeBlock()
-    KEEP.setFooterVersion()
+    $(".dropdown-menu a").on('click', function () {
+        event.preventDefault(); 
+        event.stopPropagation(); 
+        
+        if ($(this).hasClass("toc-link")) {
+            const elem = $(this).attr("href");
+            window.location.href = elem;
+        } 
+    });
 
-    if (lazyload?.enable === true) {
-      KEEP.initLazyLoad()
-    }
+    $('.expand-toggle').on('click', function () {
+        $("#toc-content").toggleClass("expand");
+        $(".expand-text").toggle();
+        $(".close-text").toggle();
+    })
 
-    if (local_search?.enable === true) {
-      KEEP.initLocalSearch()
-    }
-  }
-  KEEP.initExecute()
-})
+    $('.back-to-top').on('click', function () {
+        $('body, html').stop(true, true).animate({
+            scrollTop: 0
+        }, 100, 'linear');
+    });
+
+    $('.go-to-bottom').on('click', function () {
+        $('body, html').stop(true, true).animate({
+            scrollTop: $(document.body)[0].scrollHeight
+        }, 100, 'linear');
+    });
+});
