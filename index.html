@@ -45,6 +45,30 @@
     <section class="widget">
         <ul class="menu widget-list">
             
+                <li class="menu-item">
+                    <a href="/seacon/" class="menu-item-link">
+                        Home
+                    </a>
+                </li>
+                
+                <li class="menu-item">
+                    <a href="/seacon/about" class="menu-item-link">
+                        About
+                    </a>
+                </li>
+                
+                <li class="menu-item">
+                    <a href="/seacon/contact" class="menu-item-link">
+                        Contact
+                    </a>
+                </li>
+                
+                <li class="menu-item">
+                    <a href="/seacon/archives" class="menu-item-link">
+                        Archives
+                    </a>
+                </li>
+                
         </ul>
     </section>
     <section class="widget sidebar-foot">
@@ -73,14 +97,14 @@
             
     <article class="post post-atmain" itemscope itemtype="http://schema.org/BlogPosting">
         <h2 class="post-title" itemprop="name headline">
-            <a itemprop="url" class="post-title-link" href="/seacon/2026/05/13/%E9%A1%B5%E9%9D%A2%E6%81%A2%E5%A4%8D/">
-                页面恢复
+            <a itemprop="url" class="post-title-link" href="/seacon/2026/06/03/%E9%A1%B5%E9%9D%A2%E6%81%A2%E5%A4%8D/">
+                Verilog实现快速傅里叶变换
             </a>
         </h2>
         <ul class="post-meta">
             <li>
                 <time datetime="2020-09-04T20:18:00+00:00" itemprop="datePublished">
-                    2026-05-13
+                    2026-06-03
                 </time>
             </li>
             <li>
@@ -90,13 +114,12 @@
         <div class="post-content">
             
                  
-                    我是你哥哥12345module TOP    input a;    input b;endmldule
-
-1234567import System.os;class example &#123;    static String set = &quot;我是你哥哥&quot;;    Sy...
+                    我是你哥哥
+module butterfly_2point #(    parameter DATA_WIDTH = 16 // 输入数据位宽（包含符号位）)(    input  wire                      clk,      // 时钟信号    input  wi...
                  
              
             <p class="more">
-                <a href="/seacon/2026/05/13/%E9%A1%B5%E9%9D%A2%E6%81%A2%E5%A4%8D/">READ MORE</a>
+                <a href="/seacon/2026/06/03/%E9%A1%B5%E9%9D%A2%E6%81%A2%E5%A4%8D/">READ MORE</a>
             </p>
         </div>
     </article>
@@ -150,18 +173,27 @@
         </div>
       </main>
       <!-- highlight support -->
-
-    
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.1.0/build/styles/default.min.css">
-
-
-<script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.1.0/build/highlight.min.js"></script>
- 
-<script>
-        hljs.initHighlightingOnLoad();
-</script>
  
 <!-- prettify support -->
+
+    
+<link rel="stylesheet" href="/seacon/prettify/prettify.css">
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/color-themes-for-google-code-prettify@2.0.4/dist/themes/tomorrow.min.css">
+
+
+<script src="/seacon/seacon/prettify/prettify.js"></script>
+
+
+<script>
+    let prettifyel = document.querySelectorAll('pre');
+    for (let i = 0; i < (prettifyel || []).length; i += 1) {
+        prettifyel[i].classList.add('prettyprint');
+        prettifyel[i].classList.add('linenums');
+    }
+    PR.prettyPrint();
+</script>
  
 <!-- mathjax support -->
 

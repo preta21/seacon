@@ -45,6 +45,30 @@
     <section class="widget">
         <ul class="menu widget-list">
             
+                <li class="menu-item">
+                    <a href="/seacon/" class="menu-item-link">
+                        Home
+                    </a>
+                </li>
+                
+                <li class="menu-item">
+                    <a href="/seacon/about" class="menu-item-link">
+                        About
+                    </a>
+                </li>
+                
+                <li class="menu-item">
+                    <a href="/seacon/contact" class="menu-item-link">
+                        Contact
+                    </a>
+                </li>
+                
+                <li class="menu-item">
+                    <a href="/seacon/archives" class="menu-item-link">
+                        Archives
+                    </a>
+                </li>
+                
         </ul>
     </section>
     <section class="widget sidebar-foot">
@@ -80,22 +104,29 @@
           
           <div class="post post-atmain archive-model">
             <h2 class="archive-month">
-              2026.05
+              2026.06
             </h2>
           </div>
       
       <article class="post post-atmain archive-model" itemscope="" itemtype="http://schema.org/BlogPosting">
         <h2 class="archive-title" itemprop="name headline">
-          <a itemprop="url" href="/seacon/2026/05/13/%E9%A1%B5%E9%9D%A2%E6%81%A2%E5%A4%8D/">
+          <a itemprop="url" href="/seacon/2026/06/03/%E9%A1%B5%E9%9D%A2%E6%81%A2%E5%A4%8D/">
             <time class="archive-time" itemprop="datePublished">
-              05.13
+              06.03
             </time>
-            · 页面恢复
+            · Verilog实现快速傅里叶变换
           </a>
         </h2>
       </article>
     
       
+      
+          
+          <div class="post post-atmain archive-model">
+            <h2 class="archive-month">
+              2026.05
+            </h2>
+          </div>
       
       <article class="post post-atmain archive-model" itemscope="" itemtype="http://schema.org/BlogPosting">
         <h2 class="archive-title" itemprop="name headline">
@@ -129,18 +160,27 @@
         </div>
       </main>
       <!-- highlight support -->
-
-    
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.1.0/build/styles/default.min.css">
-
-
-<script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.1.0/build/highlight.min.js"></script>
- 
-<script>
-        hljs.initHighlightingOnLoad();
-</script>
  
 <!-- prettify support -->
+
+    
+<link rel="stylesheet" href="/seacon/prettify/prettify.css">
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/color-themes-for-google-code-prettify@2.0.4/dist/themes/tomorrow.min.css">
+
+
+<script src="/seacon/seacon/prettify/prettify.js"></script>
+
+
+<script>
+    let prettifyel = document.querySelectorAll('pre');
+    for (let i = 0; i < (prettifyel || []).length; i += 1) {
+        prettifyel[i].classList.add('prettyprint');
+        prettifyel[i].classList.add('linenums');
+    }
+    PR.prettyPrint();
+</script>
  
 <!-- mathjax support -->
 
