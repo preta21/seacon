@@ -115,12 +115,167 @@
         </ul>
         <div class="post-content" itemprop="articleBody">
             <blockquote>
-<p>课程公众号链接：<a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/UfSi4k-JKeRzU3aibzOTDg?poc_token=HLsx1mqj_9MxyTAnF60lYXppLxUVCHTP5aFVOmZR">https://mp.weixin.qq.com/s/UfSi4k-JKeRzU3aibzOTDg?poc_token=HLsx1mqj_9MxyTAnF60lYXppLxUVCHTP5aFVOmZR</a></p>
+<p>课程公众号链接：<a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/UfSi4k-JKeRzU3aibzOTDg?poc_token=HLsx1mqj_9MxyTAnF60lYXppLxUVCHTP5aFVOmZR">https://mp.weixin.qq.com/s/UfSi4k-JKeRzU3aibzOTDg?poc_token=HLsx1mqj_9MxyTAnF60lYXppLxUVCHTP5aFVOmZR</a><br>关于信号调制和星座图的说明：<a target="_blank" rel="noopener" href="https://www.zhihu.com/question/23107539/answer/72521819?utm_source=wechat_session&utm_medium=social&utm_oi=736516591579037696">https://www.zhihu.com/question/23107539/answer/72521819?utm_source=wechat_session&amp;utm_medium=social&amp;utm_oi=736516591579037696</a></p>
 </blockquote>
 <p>从一个微信公众号课程，补充通信知识。</p>
 <h4 id="QPSK是什么"><a href="#QPSK是什么" class="headerlink" title="QPSK是什么"></a>QPSK是什么</h4><img src="/seacon/2026/10/19/FPGA%E8%BF%9B%E9%98%B6%E5%AD%A6%E4%B9%A001-QPSK%E8%B0%83%E5%88%B6%E8%A7%A3%E8%B0%83/QPSK.png" class="" title="QPSK">
-
-<h4 id="逻辑电路"><a href="#逻辑电路" class="headerlink" title="逻辑电路"></a>逻辑电路</h4><h4 id="Verilog硬件建模"><a href="#Verilog硬件建模" class="headerlink" title="Verilog硬件建模"></a>Verilog硬件建模</h4><p>本课实现一个简单的调制器和解调器。调制器根据编码对数据做变化；解调器根据数据特征判断出原始编码。</p>
+<p>了解了一下，这属于通信领域的知识。QPSK（Quadrature Phase Shift Keying，QPSK 四相&#x2F;正交移相键控）属于调制-解调技术的一种。所谓调制，就是将待传输的数据，附加到指定的载波信号上；所谓解调，就是将数据从被调制的信号中解析出来。<br>QPSK，是1码元以表示2位2进制数表示。最简单的例子是，两位2进制数可以表示4种组合（4个码元）。如上图所是就是QPSK的一个简单星座图。<br>在题目中，我们假设载波信号的幅值范围为[-2048, 2048]。连续输入的消息信号，我们将其每2bit分为一组，（对应星座图上相互垂直的两条轴，I和Q），视为一个码元，按照一定算法映射到载波信号上。<br>将4种码元与I&#x2F;Q的值进行简单映射如下：</p>
+<table>
+<thead>
+<tr>
+<th align="left"></th>
+<th align="left"></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">00</td>
+<td align="left">I&#x3D;2048 , Q&#x3D;2048</td>
+</tr>
+<tr>
+<td align="left">01</td>
+<td align="left">I&#x3D;2048 , Q&#x3D;-2048</td>
+</tr>
+<tr>
+<td align="left">11</td>
+<td align="left">I&#x3D;-2048, Q&#x3D;-2048</td>
+</tr>
+<tr>
+<td align="left">10</td>
+<td align="left">I&#x3D;-2048, Q&#x3D;2048</td>
+</tr>
+<tr>
+<td align="left">假设用s[1:0]表示码元，则s[0]的正负控制Q的正负；同样的，s[1]的正负控制I的正负。</td>
+<td align="left"></td>
+</tr>
+</tbody></table>
+<p>以上，00-11是4个码元；每个码元需要2bit表示，对应的就是I和Q两个分量。在一般的通信调制设计中，其实I&#x2F;Q的4种类组合，其实对应4种相位，比如0-90-180-270，这种相位变化会加到消息信号中。<br>这里的映射关系做了简化。，每种码元只用来指示信号幅值的正负。</p>
+<h4 id="逻辑电路"><a href="#逻辑电路" class="headerlink" title="逻辑电路"></a>逻辑电路</h4><h5 id="信号调制器"><a href="#信号调制器" class="headerlink" title="信号调制器"></a>信号调制器</h5><p>首先，确定这个题目的输入和输出。对于连续输入的消息信号，肯定需要设计时序电路，clk和rst之类的就不需要说了。此外，</p>
+<ul>
+<li>需要1个消息信号的码元输入s，用2bit表示</li>
+<li>需要一组正交输出i和q，各使用12bit表示（对应载波的幅值范围）<br>接下来，绘制该逻辑电路设计的真值表。先假设该逻辑电路的幅值为A&#x3D;2048。则，对于输出i来说，真值表如下：</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th align="left">s[1:0]</th>
+<th align="left">i[11:0]</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">00</td>
+<td align="left">i&#x3D;A</td>
+</tr>
+<tr>
+<td align="left">01</td>
+<td align="left">i&#x3D;A</td>
+</tr>
+<tr>
+<td align="left">11</td>
+<td align="left">i&#x3D;-A</td>
+</tr>
+<tr>
+<td align="left">10</td>
+<td align="left">i&#x3D;-A</td>
+</tr>
+<tr>
+<td align="left">再通过卡诺图简化得到 i&#x3D;~s[1]；</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">同样的算法，得到 q&#x3D;~s[0]</td>
+<td align="left"></td>
+</tr>
+</tbody></table>
+<h5 id="信号解调器"><a href="#信号解调器" class="headerlink" title="信号解调器"></a>信号解调器</h5><ul>
+<li>需要2个调制信号输入i_in和q_in，各12bit；</li>
+<li>需要一个解调后的消息信号输出s_out，用2bit表示。<br>将i_in的卡诺图表示如下：</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th align="left">i_in[11:0]</th>
+<th align="left">s_out[1]</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">i&#x3D;A</td>
+<td align="left">0</td>
+</tr>
+<tr>
+<td align="left">i&#x3D;A</td>
+<td align="left">0</td>
+</tr>
+<tr>
+<td align="left">i&#x3D;-A</td>
+<td align="left">1</td>
+</tr>
+<tr>
+<td align="left">i&#x3D;-A</td>
+<td align="left">1</td>
+</tr>
+<tr>
+<td align="left">得到s_out[1]&#x3D;(i_in&#x3D;&#x3D;-A)</td>
+<td align="left"></td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th align="left">i_in[11:0]</th>
+<th align="left">s_out[0]</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">i_in&#x3D;A</td>
+<td align="left">0</td>
+</tr>
+<tr>
+<td align="left">i_in&#x3D;A</td>
+<td align="left">1</td>
+</tr>
+<tr>
+<td align="left">i_in&#x3D;-A</td>
+<td align="left">1</td>
+</tr>
+<tr>
+<td align="left">i_in&#x3D;-A</td>
+<td align="left">0</td>
+</tr>
+<tr>
+<td align="left">无法直接得到s_out[0]和i的直接逻辑关系。则判断q和s_out[0]的关系。</td>
+<td align="left"></td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th align="left">q_in[11:0]</th>
+<th align="left">s_out[0]</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">q_in&#x3D;A</td>
+<td align="left">0</td>
+</tr>
+<tr>
+<td align="left">q_in&#x3D;-A</td>
+<td align="left">1</td>
+</tr>
+<tr>
+<td align="left">q_in&#x3D;-A</td>
+<td align="left">1</td>
+</tr>
+<tr>
+<td align="left">q_in&#x3D;A</td>
+<td align="left">0</td>
+</tr>
+<tr>
+<td align="left">得到s_out[1]&#x3D;(q_in&#x3D;&#x3D;-A)</td>
+<td align="left"></td>
+</tr>
+</tbody></table>
+<p>逻辑电路确定了，那么可以进行Verilog建模了。</p>
+<h4 id="Verilog硬件建模"><a href="#Verilog硬件建模" class="headerlink" title="Verilog硬件建模"></a>Verilog硬件建模</h4><p>本课实现一个简单的调制器和解调器。调制器根据编码对数据做变化；解调器根据数据特征判断出原始编码。</p>
 <p>调制器原始Verilog代码如下：</p>
 <!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>代码预览</title></head><body style="margin:0"><div class="syntax-highlighting"><div data-code-viewport="" tabindex="0" style="margin:0;padding:0;height:448px;box-sizing:border-box;scrollbar-width:thin;scrollbar-color:color-mix(in srgb, currentColor 28%, transparent) transparent;overflow:auto;tab-size:4;font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,&quot;Liberation Mono&quot;,&quot;Courier New&quot;,monospace;font-size:14px;line-height:28px;font-weight:400;font-style:normal;text-align:left;white-space:pre;background-color:#f8f9fa;color:#5c6166"><div style="display:block;width:max-content;min-width:100%;padding-block:20px;font-family:inherit;font-size:inherit;line-height:inherit"><div data-line="1" style="display:block;box-sizing:border-box;padding-inline:20px;min-height:28px"><span aria-hidden="true" style="display:inline-block;width:3ch;user-select:none;text-align:right;padding-right:16px;box-sizing:content-box;color:#888888">1</span><code style="font-family:inherit;font-size:inherit"><span style="color:#5C6166">`</span><span style="color:#4CBF99">timescale</span><span style="color:#5C6166"> </span><span style="color:#A37ACC">1ns</span><span style="color:#5C6166"> </span><span style="color:#F2A191">/</span><span style="color:#5C6166"> </span><span style="color:#A37ACC">1ps</span>
 </code></div><div data-line="2" style="display:block;box-sizing:border-box;padding-inline:20px;min-height:28px"><span aria-hidden="true" style="display:inline-block;width:3ch;user-select:none;text-align:right;padding-right:16px;box-sizing:content-box;color:#888888">2</span><code style="font-family:inherit;font-size:inherit">
